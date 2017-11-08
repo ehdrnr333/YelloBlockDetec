@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.user.yellowblockdetect.MainActivity">
+    android:orientation="vertical"
+    tools:context="com.example.user.yellowblockdetect.MainActivity"
+    android:weightSum="1">
 
     <org.opencv.android.JavaCameraView
+        android:id="@+id/camera"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/activity_surface_view" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>
