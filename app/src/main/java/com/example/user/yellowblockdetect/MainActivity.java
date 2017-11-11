@@ -2,6 +2,7 @@ package com.example.user.yellowblockdetect;
 
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,6 @@ import android.util.Log;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.JavaCameraView;
@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity
             switch (msg.what) {
                 // ** 여기에 장애인 알림 서비스 메소드 추가 **
                 case SEND_THREAD_INFOMATION:
+                    startService(new Intent(MainActivity.this, TTSService.class).putExtra("str","slope = " + msg.arg2));
                     Toast.makeText(getApplicationContext(), "slope = " + msg.arg2 + "  \n" + msg.obj, Toast.LENGTH_SHORT).show();
                     //debugText.setText("현재각도 = " + msg.arg1 + "\n" +"slope = " + msg.arg2 + "  \n" + msg.obj);
                     break;
