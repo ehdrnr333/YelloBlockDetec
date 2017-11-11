@@ -48,7 +48,7 @@ JNIEXPORT jintArray JNICALL Java_com_example_user_yellowblockdetect_MainActivity
     int LowV = 50;
     int HighV = 255;
 
-    int conSize = 500;
+    int conSize = 1000;
 
     int length = 40;
     jintArray intArray = env->NewIntArray(length + 2);
