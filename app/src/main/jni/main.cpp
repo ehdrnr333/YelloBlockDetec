@@ -115,7 +115,7 @@ JNIEXPORT jintArray JNICALL Java_com_example_user_yellowblockdetect_MainActivity
                 cintArray[i * 2 + 2] = approx[i].y;
 
                 // * img_blur에 꼭지점 좌표를 그린다
-                putText(img_blur, '['+IntToString(int(approx[(i) % length].x)) +',' +IntToString(int(approx[(i) % length].y)) + ']', approx[(i) % length], FONT_HERSHEY_SIMPLEX, 0.5, CV_RGB(0, 0, 255), 1, 8);
+                //putText(img_blur, '['+IntToString(int(approx[(i) % length].x)) +',' +IntToString(int(approx[(i) % length].y)) + ']', approx[(i) % length], FONT_HERSHEY_SIMPLEX, 0.5, CV_RGB(0, 0, 255), 1, 8);
             }
             // </ 6.다각형 꼭지점을 최종 반환배열에 저장 > => cintArray[0~40]
 

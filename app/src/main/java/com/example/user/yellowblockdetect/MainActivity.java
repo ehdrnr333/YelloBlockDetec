@@ -90,9 +90,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onInit(int i) {
         String myText1 = "안녕하세요 장애인 안내 서비스 걸음걸이 입니다.";
-        String myText2 = "말하는 스피치 입니다.";
+//        String myText2 = "말하는 스피치 입니다.";
         myTTS.speak(myText1, TextToSpeech.QUEUE_FLUSH, null);
-        myTTS.speak(myText2, TextToSpeech.QUEUE_ADD, null);
+//        myTTS.speak(myText2, TextToSpeech.QUEUE_ADD, null);
     }
 
     // <핸들러>
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity
             switch (msg.what) {
                 // ** 여기에 장애인 알림 서비스 메소드 추가 **
                 case SEND_THREAD_INFOMATION:
-                    myTTS.speak("현재블럭은 " + msg.obj, TextToSpeech.QUEUE_FLUSH, null);
+                    myTTS.speak("" + msg.obj, TextToSpeech.QUEUE_FLUSH, null);
                     //myTTS.speak(myText2, TextToSpeech.QUEUE_ADD, null);
                     //Toast.makeText(getApplicationContext(), "slope = " + msg.arg2 + "  \n" + msg.obj, Toast.LENGTH_SHORT).show();
                     //debugText.setText("현재각도 = " + msg.arg1 + "\n" +"slope = " + msg.arg2 + "  \n" + msg.obj);
@@ -133,9 +133,11 @@ public class MainActivity extends AppCompatActivity
     final int Status_Left1 = 2;
     final int Status_Left2 = 3;
     final int Status_Left3 = 4;
-    final int Status_Right1 = 5;
-    final int Status_Right2 = 6;
-    final int Status_Right3 = 7;
+    final int Status_Left4 = 5;
+    final int Status_Right1 = 6;
+    final int Status_Right2 = 7;
+    final int Status_Right3 = 8;
+    final int Status_Right4 = 9;
 
     // <C++ 영상처리 함수 호출 영역>
     @Override
@@ -178,10 +180,20 @@ public class MainActivity extends AppCompatActivity
             final double[] angle = {7.111, 4, 1.1851};
             String hi;
             if (slope[0] * slope[jni_data[0] - 1] < 0) {
-                hi = new String("전방 ");
+                hi = new String("전방으로 가세요");
                 currentStatus = Status_Front;
                 if(check) {
-                    hi += (int)(jni_data[41]) + "도";
+                    int direction = (int)(jni_data[41]);
+                    if(direction < 0)
+                    {
+                        direction = (90+direction);
+                        hi = "왼쪽으로 " + direction + "도 기울어져있습니다";
+                    }
+                    else
+                    {
+                        direction = (90-direction);
+                        hi = "오른쪽으로 " + direction + "도 기울어져있습니다";
+                    }
 //                    if (angle[1] <= averageSlope && averageSlope < angle[0]) {
 //                        currentStatus = Status_Right1;
 //                        hi += "1시 방향";
@@ -208,32 +220,38 @@ public class MainActivity extends AppCompatActivity
             }
             else if (slope[0] > 0)
             {
-                hi = new String("오른쪽 ");
+                hi = new String();
                 if (angle[1] <= averageSlope && averageSlope < angle[0]) {
                     currentStatus = Status_Right1;
-                    hi += "1시 방향";
+                    hi += "1시 방향으로 가세요";
                 } else if (angle[2] <= averageSlope && averageSlope < angle[1]) {
                     currentStatus = Status_Right2;
-                    hi += "2시 방향";
+                    hi += "2시 방향으로 가세요";
                 } else if (averageSlope < angle[2]) {
                     currentStatus = Status_Right3;
-                    hi += "3시 방향";
+                    hi += "3시 방향으로 가세요";
+                } else {
+                    currentStatus = Status_Right4;
+                    hi += "오른쪽 전방으로 가세요";
                 }
                 msg.obj = hi;
             }
             else
             {
-                hi = new String("왼쪽 ");
+                hi = new String();
                 if (-angle[1] > averageSlope && averageSlope >= -angle[0]) {
                     currentStatus = Status_Left1;
-                    hi += "11시 방향";
+                    hi += "11시 방향으로 가세요";
                 } else if (-angle[2] > averageSlope && averageSlope >= -angle[1]) {
                     currentStatus = Status_Left2;
-                    hi += "10시 방향";
+                    hi += "10시 방향으로 가세요";
                 }
                 else if(averageSlope >= -angle[2]) {
                     currentStatus = Status_Left3;
-                    hi += "9시 방향";
+                    hi += "9시 방향으로 가세요";
+                } else {
+                    currentStatus = Status_Left4;
+                    hi += "왼쪽 전방으로 가세요";
                 }
                 msg.obj = hi;
             }
@@ -246,7 +264,7 @@ public class MainActivity extends AppCompatActivity
         }
         else {
             currentStatus = Status_None;
-            msg.obj = "없음";
+            msg.obj = "점자블록이 없습니다";
         }
         if(currentStatus == lastStatus)
         {
